@@ -1,6 +1,6 @@
 <?php
 
-class Solution
+final class Solution
 {
     public function __construct()
     {
