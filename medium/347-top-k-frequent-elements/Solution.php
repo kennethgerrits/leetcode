@@ -4,7 +4,7 @@ final class Solution
 {
     public function __construct()
     {
-        var_dump($this->topKFrequent([1], 1));
+        var_dump($this->topKFrequent([1, 1, 1, 2, 2, 3], 2));
     }
 
     /**
@@ -16,6 +16,7 @@ final class Solution
     function topKFrequent(array $nums, int $k): array
     {
         $hashmap = []; # num : amount
+        $maxHeap = new SplMaxHeap();
 
         foreach ($nums as $num) {
             if (array_key_exists($num, $hashmap)) {
@@ -25,9 +26,19 @@ final class Solution
             }
         }
 
-        arsort($hashmap, SORT_NUMERIC);
+        foreach ($hashmap as $key => $value) {
+            $maxHeap->insert([$value, $key]);
+        }
 
-        return array_slice(array_keys($hashmap), 0, $k);
+        $result = [];
+        while (!$maxHeap->isEmpty()) {
+            if (count($result) === $k) {
+                break;
+            }
+            $result[] = $maxHeap->extract()[1];
+        }
+
+        return $result;
     }
 }
 
